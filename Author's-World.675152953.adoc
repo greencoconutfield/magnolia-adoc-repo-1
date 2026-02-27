@@ -1,0 +1,33 @@
+= Author's World
+:page-title: Author's World
+:page-id: 675152953
+:page-created: 2024-06-21T06:14:04.088+0000
+:page-modified: 2025-01-21T08:27:53.764+0000
+:page-version: 3
+:imagesdir: .  
+
+
+== Coverage
+
+* xref:AdminCentral.675152969.adoc[AdminCentral]
+* xref:Apps-Intro.675153484.adoc[Apps Intro]
+
+
+== Result
+
+After completing this section, you will:
+
+* Be more knowledgeable about how authors use and work on author instances
+* Be familiar with AdminCentral
+* Know how to use the find bar
+* Know how to use app launcher
+* Have an overview of Magnolia Apps available OOTB
+* Have used the Pages and Assets apps to create a web page +
+ +
+ +
+ +
+ +
+
+
+---
+
