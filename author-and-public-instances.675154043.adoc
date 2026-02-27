@@ -1,0 +1,179 @@
+= Author and Public Instances
+:page-title: Author and Public Instances
+:page-id: 675154043
+:page-created: 2024-06-21T06:14:57.006+0000
+:page-modified: 2025-12-12T12:25:47.856+0000
+:page-version: 16
+:imagesdir: .
+
+
+== Coverage
+
+* xref:Author-and-Public-Instances.675154043.adoc[Author Instance]
+* xref:Author-and-Public-Instances.675154043.adoc[Public Instance]
+** xref:Author-and-Public-Instances.675154043.adoc[Standard Production Setup]
+** xref:Author-and-Public-Instances.675154043.adoc[Multi-site Example: Internet, Intranet and Extranet]
+** xref:Author-and-Public-Instances.675154043.adoc[Setup Possibilities Overview]
+** xref:Author-and-Public-Instances.675154043.adoc[Be aware of 'Public User generated Content']
+* xref:Author-and-Public-Instances.675154043.adoc[Content's Publication Status]
+* xref:Author-and-Public-Instances.675154043.adoc[Author Instance vs Public Instance(s)]
+
+
+=== Goals
+
+* To understand conceptually why Magnolia always needs an Author instance and at least one Public instance
+* To be able to differentiate between (and access) author and public instances
+* To know who uses Author instances
+* To know who uses Public instances
+* To understand why we normally use two Public instances instead of one.
+
+
+== Author Instance
+
+image::images/675154043/admincentral2.png[, 700]
+
+** Accessible through the URL http://localhost:8080/magnoliaAuthor[http://localhost:8080/magnoliaAuthor]
+** Authors work on the Author Instance - it's where they* create, edit, manage or delete content*
+** Reflects the actual state of the editorial content, not the public state of the content
+** Usually located in a protected environment, not public to the outside world
+** *Only one Author Instance usually exists*
+** When edited content should be published, the content is activated
+** Activating content pushes the data from the Author Instance to any configured Public Instance(s)
+
+
+== Public Instance
+
+image::images/675154043/public-instance.png[, 700]
+
+** Accessible through the URL http://localhost:8080/magnoliaPublic[http://localhost:8080/magnoliaPublic]
+** *Public instance(s) serve the content or pages to the public world*
+** *Receives the content from an Author Instance*
+** Authors do not work on Public instances
+Each instance should run in its own Application server
+
+
+[NOTE]
+====
+Best Practice: Run two public instances for load balancing and fail over safety.
+====
+
+.
+
+
+
+== Instances Setup
+
+An overview of the different setup possibilities and situations.
+
+
+=== Standard Production Setup
+
+image::images/675154043/author-and-public-instances.png[, 700]
+
++
+
+
+=== Multi-site Example: Internet, Intranet and Extranet
+
+image::images/675154043/publishing-to-intranet-and-extranet.png[, 700] +
+ +
+
+
+=== Setup Possibilities Overview
+
+image::images/675154043/instance-configuration-examples.png[, 700] +
+ +
+
+
+=== Be aware of '_Public User generated Content'_
+
+It is important to be aware of the content created by public users; a typical example is page comments: +
+The public instances have separate DBs and in front is a LB located that balances the requests in between the two public instances.
+
+→ Content from public users would be created only in one of the public instances.
+
+The content must be either shared or synchronized. +
+One possible solution is using a JCR cluster for a certain workspace:
+
+image::images/675154043/clustering.png[, 700] +
+ +
+
+
+== Content's Publication Status
+
+* The '*_status_*' column in the '_Pages App_' or any other Content Apps is the publication status indicator:
++
+image::images/675154043/activated-pages.png[, 700]
++
+image::images/675154043/activation-green.png[]
+* : The page/content has been *published AND is unchanged* on the Author instance since the last publication.
++
+image::images/675154043/activation-orange.png[, 61]
+* : The page/content has been *published BUT was changed* on the Author instance since the last publication.
++
+image::images/675154043/activation-red.png[, 41]
+* : The page/content has *NOT been published* yet.
++
+image::images/675154043/marked-for-deletion.png[]
+* : The page/content was *marked for deletion* → the deletion must also be published. +
+
+
+== Author Instance vs Public Instance(s)
+
+In Magnolia scope, both are the same web-application, only *the configuration* varies
+
+
+[cols="1,1,1",options="header"]
+|===
+| Configuration
+| Configuration value
+| Instance
+
+| +
+config/server/admin
+| true
+| Author
+
+| false
+| Public
+
+|===
+
+The ACLs of the anonymous role is always different! And most likely other ACLs too.
+
+
+[cols="1,1,1",options="header"]
+|===
+| Instance
+| Role
+| Access
+
+| Author
+| anonymous
+| *NO* access to anything - login required.
+
+| Public
+| anonymous
+| Has read access to *all public pages*.
+
+|===
+
+* Often project-specific roles are different on Author and Public instances, depending on the edit rights and project specs
+* Usually located in different network environments
+
+.. Protected
+.. DMZ
+
++
+
++
+
++
+
++
+
++
+
+
+---
+
